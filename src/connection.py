@@ -1,14 +1,14 @@
 import psycopg2
-
+from src.config import connectionString
 
 class DAO:
     def __init__(self):
-        self.conn = psycopg2.connect("dbname=app user=postgres password=1221909128 host=localhost")
+        self.conn = psycopg2.connect(connectionString)
 
         if self.conn.status:
-            print('Successfully connected')
+            print('Успешное подключение к БД')
         else:
-            print('Connection corrupted')
+            print('Подключение к БД не удалось установить')
 
         self.cur = self.conn.cursor()
 
