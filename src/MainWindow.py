@@ -58,18 +58,22 @@ class MainWindow(QDialog):
         self.setTable()
 
     def addButtonClicked(self):
-        window = AddRecord(self.dao, self.columns)
+        window = AddRecord(self.dao, self.columns, self.tableChoice.currentText())
+
         self.windowManager.addWidget(window)
         self.windowManager.setCurrentWidget(window)
-        window.exec_()
+        if window.run():
+            self.setTable()
+            self.adjustSize()
+
         self.windowManager.setCurrentWidget(self)
 
     def setTable(self):
         self.dao.exec('SELECT * FROM ' +
-                      self.tableChoice.itemText(self.tableChoice.currentIndex()))
+                      self.tableChoice.currentText())
 
         data = self.dao.getFromSelect()
-        self.columns = self.dao.getColumnNames(self.tableChoice.itemText(self.tableChoice.currentIndex()))
+        self.columns = self.dao.getColumnNames(self.tableChoice.currentText())
 
         # path to qpixmap inside cell
         photos = []
@@ -85,4 +89,3 @@ class MainWindow(QDialog):
         self.table.resizeRowsToContents()
         self.table.resizeColumnsToContents()
 
-        #self.table.resize(600, 400)

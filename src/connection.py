@@ -14,6 +14,10 @@ class DAO:
 
     def exec(self, query):
         self.cur.execute(query)
+        self.save()
+
+    def save(self):
+        self.conn.commit()
 
     def getFromSelect(self):
         return self.cur.fetchall()
