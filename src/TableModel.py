@@ -22,7 +22,7 @@ class TableModel(QtCore.QAbstractTableModel):
         if role == Qt.SizeHintRole and len(self.photos) and self.headers[index.column()] == 'photo':
             return self.photos[index.row()].size()
 
-        if role == Qt.DisplayRole:
+        if role == Qt.DisplayRole and self.headers[index.column()] != 'photo':
             return self._data[index.row()][index.column()]
 
     def rowCount(self, index):

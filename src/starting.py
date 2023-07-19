@@ -1,5 +1,5 @@
-from src.MainWindow import *
-
+from src.MainWindow import MainWindow
+from PyQt5.QtWidgets import QApplication
 
 class Start:
     def __init__(self):
