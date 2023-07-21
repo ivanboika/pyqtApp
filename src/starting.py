@@ -1,4 +1,4 @@
-from src.MainWindow import MainWindow
+from src.View.MainWindow import MainWindow
 from PyQt5.QtWidgets import QApplication
 
 class Start:

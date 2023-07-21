@@ -1,7 +1,8 @@
 import psycopg2
-from src.config import connectionString
+from src.DBAccess.config import connectionString
 
-class DAO:
+
+class Connection:
     def __init__(self):
         self.conn = psycopg2.connect(connectionString)
 

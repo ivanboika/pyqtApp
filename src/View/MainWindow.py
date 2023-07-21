@@ -1,13 +1,14 @@
-from PyQt5.QtWidgets import QDialog, QStackedWidget, QTableView, QComboBox, QPushButton, QLineEdit, QHeaderView, QWidget, QGridLayout
-from src.connection import DAO
-from win32api import GetSystemMetrics
-from src.TableModel import TableModel
+from PyQt5.QtWidgets import \
+    QDialog, QStackedWidget, QTableView, QComboBox,\
+    QPushButton, QLineEdit, QHeaderView, QGridLayout
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, QSortFilterProxyModel
-from src.addrecordwidget import AddRecord
-import regex
-import PyQt5.QtCore
-import PyQt5.QtWidgets
+
+from src.DBAccess.connection import Connection
+from src.Model.TableModel import TableModel
+from src.View.addrecordwidget import AddRecord
+
+from win32api import GetSystemMetrics
 
 
 class MainWindow(QDialog):
@@ -25,7 +26,7 @@ class MainWindow(QDialog):
         self.searchLine.textChanged.connect(self.searchRecord)
 
     def setupWidgets(self):
-        self.dao = DAO()
+        self.dao = Connection()
         self.columns = []
         self.windowManager = QStackedWidget()
         self.windowManager.addWidget(self)
@@ -33,14 +34,11 @@ class MainWindow(QDialog):
 
         self.table = QTableView()
         self.tableChoice = QComboBox(self)
-        #self.widgetLayout = QWidget(self)
 
         self.addButton = QPushButton('Добавить запись')
         self.editButton = QPushButton('Редактировать запись')
         self.searchChoice = QComboBox()
         self.searchLine = QLineEdit()
-
-        self.searchSignal = PyQt5.QtCore.pyqtSignal(int, QWidget)
 
     def searchRecord(self):
         index = self.searchChoice.currentIndex()
@@ -112,3 +110,11 @@ class MainWindow(QDialog):
 
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.table.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.table.resizeRowsToContents()
+        self.table.setMinimumHeight(self.geometry().height() - 50) # do one more method for resizing
+
+    def responceToResize(self):
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.table.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.table.resizeRowsToContents()
+        self.table.setMinimumHeight(self.geometry().height() - 50)
