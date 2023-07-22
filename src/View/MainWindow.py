@@ -112,9 +112,3 @@ class MainWindow(QDialog):
         self.table.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table.resizeRowsToContents()
         self.table.setMinimumHeight(self.geometry().height() - 50) # do one more method for resizing
-
-    def responceToResize(self):
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.table.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.table.resizeRowsToContents()
-        self.table.setMinimumHeight(self.geometry().height() - 50)
