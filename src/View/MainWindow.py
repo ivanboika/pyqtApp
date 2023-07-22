@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import \
-    QDialog, QStackedWidget, QTableView, QComboBox,\
-    QPushButton, QLineEdit, QHeaderView, QGridLayout
+    QDialog, QStackedWidget, QTableView, QComboBox, \
+    QPushButton, QLineEdit, QHeaderView, QGridLayout, QAbstractItemView
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, QSortFilterProxyModel
 
@@ -24,6 +24,7 @@ class MainWindow(QDialog):
         self.tableChoice.currentIndexChanged.connect(self.itemChanged)
         self.addButton.clicked.connect(self.addButtonClicked)
         self.searchLine.textChanged.connect(self.searchRecord)
+        self.editButton.clicked.connect(self.editRecord)
 
     def setupWidgets(self):
         self.dao = Connection()
@@ -50,8 +51,7 @@ class MainWindow(QDialog):
         buttonLayout = QGridLayout()
         buttonLayout.addWidget(self.addButton, 0, 0)
         buttonLayout.addWidget(self.editButton, 1, 0)
-        buttonLayout.addWidget(self.tableChoice, 3, 0)
-        buttonLayout.addWidget(QPushButton('Поиск записи'), 2, 0)
+        buttonLayout.addWidget(self.tableChoice, 2, 0)
         buttonLayout.addWidget(self.searchLine, 0, 1)
         buttonLayout.addWidget(self.searchChoice, 0, 2)
         buttonLayout.addWidget(self.table, 1, 1, 8, 8, Qt.AlignTop)
@@ -68,6 +68,8 @@ class MainWindow(QDialog):
 
         self.setTable()
         self.windowManager.show()
+
+        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
 
         self.setMinimumSize(GetSystemMetrics(0)/3, GetSystemMetrics(1)/3)
 
@@ -112,3 +114,15 @@ class MainWindow(QDialog):
         self.table.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table.resizeRowsToContents()
         self.table.setMinimumHeight(self.geometry().height() - 50) # do one more method for resizing
+
+    def editRecord(self):
+        row = self.table.currentIndex().row()
+
+        for column in range(len(self.columns)):
+            index = self.table.model().index(row, column)
+            item = self.table.model().data(index, Qt.DisplayRole)
+            image = self.table.model().data(index, Qt.DecorationRole)
+            if item is not None:
+                print(item)
+            if image is not None:
+                print(image)
