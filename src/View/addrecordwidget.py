@@ -7,14 +7,14 @@ from src.View.ImageLabel import ImageLabel
 
 
 class AddRecord(QDialog):
-    def __init__(self, daoObject, columns, tableName):
+    def __init__(self, connectionObject, columns, tableName):
         super().__init__()
 
         self.setAcceptDrops(True)
 
         self.setWindowTitle('Добавление записи')
 
-        self.daoObject = daoObject
+        self.connectionObject = connectionObject
         self.tableName = tableName
         self.columnNames = columns
         self.filePath = ''
@@ -62,7 +62,7 @@ class AddRecord(QDialog):
             query += '\'' + columnValues[index] + '\','
         query = query.removesuffix(',')
         query += ');'
-        self.daoObject.exec(query)
+        self.connectionObject.exec(query)
         self.status = True
         self.close()
 

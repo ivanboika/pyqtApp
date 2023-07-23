@@ -7,6 +7,7 @@ from PyQt5.QtCore import Qt, QSortFilterProxyModel
 from src.DBAccess.connection import Connection
 from src.Model.TableModel import TableModel
 from src.View.addrecordwidget import AddRecord
+from src.View.EditingWindow import EditingWindow
 
 from win32api import GetSystemMetrics
 
@@ -117,12 +118,25 @@ class MainWindow(QDialog):
 
     def editRecord(self):
         row = self.table.currentIndex().row()
-
+        if row == -1:
+            return
+        photos = []
+        items = []
         for column in range(len(self.columns)):
             index = self.table.model().index(row, column)
             item = self.table.model().data(index, Qt.DisplayRole)
             image = self.table.model().data(index, Qt.DecorationRole)
             if item is not None:
-                print(item)
+                items.append(item)
             if image is not None:
-                print(image)
+                photos.append(image)
+
+        editing = EditingWindow(self.dao, self.columns, items, photos)
+
+        self.windowManager.addWidget(editing)
+        self.windowManager.setCurrentWidget(editing)
+        if editing.run():
+            self.setTable()
+            self.adjustSize()
+
+        self.windowManager.setCurrentWidget(self)
