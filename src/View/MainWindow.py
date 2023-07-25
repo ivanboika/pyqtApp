@@ -5,12 +5,14 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, QSortFilterProxyModel
 
 from src.DBAccess.connection import Connection
+from src.DBAccess.Controller import Controller
+from src.Model.ModelHandler import modelHandler
 from src.Model.TableModel import TableModel
-from src.View.addrecordwidget import AddRecord
+from src.View.AddRecordWidget import AddRecord
 from src.View.EditingWindow import EditingWindow
 
 from win32api import GetSystemMetrics
-from src.DBAccess.Controller import Controller
+import regex as rgx
 
 class MainWindow(QDialog):
     def __init__(self):
@@ -79,7 +81,7 @@ class MainWindow(QDialog):
         self.setTable()
 
     def addButtonClicked(self):
-        window = AddRecord(self.dao, self.columns, self.tableChoice.currentText())
+        window = AddRecord(self.controller, self.columns, self.tableChoice.currentText())
 
         self.windowManager.addWidget(window)
         self.windowManager.setCurrentWidget(window)
@@ -90,12 +92,10 @@ class MainWindow(QDialog):
         self.windowManager.setCurrentWidget(self)
 
     def setTable(self):
+        tableData = self.controller.getDataFromTable(
+            modelHandler(self.tableChoice.currentText()))
 
-        self.dao.exec('SELECT * FROM ' +
-                      self.tableChoice.currentText())
-
-        data = self.dao.getFromSelect()
-        self.columns = self.dao.getColumnNames(self.tableChoice.currentText())
+        self.columns = self.controller.getColumnNames(modelHandler(self.tableChoice.currentText()))
 
         self.searchChoice.clear()
         for column in self.columns:
@@ -103,13 +103,13 @@ class MainWindow(QDialog):
 
         # path to qpixmap inside cell
         photos = []
-        for row in data:
+        for row in tableData:
             for column in self.columns:
-                if column == 'photo':
+                if rgx.search('photo', column):
                     pixmap = QPixmap(row[self.columns.index(column)])
                     photos.append(pixmap)
 
-        model = TableModel(data, self.columns, photos)
+        model = TableModel(tableData, self.columns, photos)
         self.searchFilter.setSourceModel(model)
         self.table.setModel(model)
 

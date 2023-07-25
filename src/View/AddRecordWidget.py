@@ -4,7 +4,8 @@ from PyQt5.QtWidgets import QDialog, QLabel, QPushButton, QGridLayout, QLineEdit
 import regex as rgx
 
 from src.View.ImageLabel import ImageLabel
-
+from src.DBAccess.Controller import Controller
+from src.Model.ModelHandler import modelHandler
 
 class AddRecord(QDialog):
     def __init__(self, connectionObject, columns, tableName):
@@ -46,23 +47,13 @@ class AddRecord(QDialog):
         cancelButton.clicked.connect(self.close)
 
     def addButtonOkButtonClicked(self):
-        query = 'INSERT INTO ' + self.tableName + '('
-
-        for index in range(len(self.columnNames)):
-            query += self.columnNames[index] + ','
-        query = query.removesuffix(',')
-        query += ') VALUES ('
-
-        columnValues = []
+        values = {}
 
         for row in range(self.addLayout.rowCount() - 1):
-            columnValues.append(self.addLayout.itemAtPosition(row, 1).widget().text())
+            values.update({self.columnNames[row]: self.addLayout.itemAtPosition(row, 1).widget().text()})
 
-        for index in range(len(columnValues)):
-            query += '\'' + columnValues[index] + '\','
-        query = query.removesuffix(',')
-        query += ');'
-        self.connectionObject.exec(query)
+        self.connectionObject.insertData(modelHandler(self.tableName), values)
+
         self.status = True
         self.close()
 

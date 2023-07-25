@@ -1,7 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column, Session
-from sqlalchemy import create_engine, select, inspect
 from src.Model.BaseModel import Base
-from sqlalchemy import MetaData
 
 
 class Chair(Base):
@@ -20,25 +18,3 @@ class Chair(Base):
     def toList(self) -> list:
         return [self.article, self.name, self.amount, self.producer, self.photo]
 
-
-if __name__ == '__main__':
-    engine = create_engine('postgresql+psycopg2://postgres:1221909128@localhost/app')
-    session = Session(engine)
-
-    stmt = select(Chair)
-
-    insp = inspect(Chair)
-
-    metadata = MetaData()
-    metadata.reflect(engine)
-
-    for table in metadata.tables.keys():
-        print(table)
-
-
-
-    for item in insp.columns:
-        print(item.name)
-
-    for chair in session.scalars(stmt):
-        print(chair)
