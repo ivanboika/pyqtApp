@@ -10,13 +10,15 @@ from src.View.addrecordwidget import AddRecord
 from src.View.EditingWindow import EditingWindow
 
 from win32api import GetSystemMetrics
-
+from src.DBAccess.Controller import Controller
 
 class MainWindow(QDialog):
     def __init__(self):
         super(MainWindow, self).__init__()
 
         self.setWindowTitle('Application')
+
+        self.controller = Controller()
 
         self.setupWidgets()
 
@@ -59,11 +61,10 @@ class MainWindow(QDialog):
 
         self.setLayout(buttonLayout)
 
-        self.dao.exec("""SELECT table_name FROM information_schema.tables
-                       WHERE table_schema = 'public'""")
+        tableNames = self.controller.getAllTableNames()
 
-        for tableName in self.dao.getFromSelect():
-            self.tableChoice.addItem(tableName[0])
+        for tableName in tableNames:
+            self.tableChoice.addItem(tableName)
 
         self.searchFilter.setFilterCaseSensitivity(Qt.CaseSensitive)
 
@@ -89,6 +90,7 @@ class MainWindow(QDialog):
         self.windowManager.setCurrentWidget(self)
 
     def setTable(self):
+
         self.dao.exec('SELECT * FROM ' +
                       self.tableChoice.currentText())
 
