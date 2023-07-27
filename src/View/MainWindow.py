@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import \
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, QSortFilterProxyModel
 
-from src.DBAccess.connection import Connection
 from src.DBAccess.Controller import Controller
 from src.Model.ModelHandler import modelHandler
 from src.Model.TableModel import TableModel
@@ -13,6 +12,7 @@ from src.View.EditingWindow import EditingWindow
 
 from win32api import GetSystemMetrics
 import regex as rgx
+
 
 class MainWindow(QDialog):
     def __init__(self):
@@ -32,7 +32,6 @@ class MainWindow(QDialog):
         self.editButton.clicked.connect(self.editRecord)
 
     def setupWidgets(self):
-        self.dao = Connection()
         self.columns = []
         self.windowManager = QStackedWidget()
         self.windowManager.addWidget(self)
@@ -133,7 +132,7 @@ class MainWindow(QDialog):
             if image is not None:
                 photos.append(image)
 
-        editing = EditingWindow(self.dao, self.columns, items, photos)
+        editing = EditingWindow(self.controller, self.columns, items, photos, self.tableChoice.currentText())
 
         self.windowManager.addWidget(editing)
         self.windowManager.setCurrentWidget(editing)

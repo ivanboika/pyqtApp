@@ -4,8 +4,8 @@ from PyQt5.QtWidgets import QDialog, QLabel, QPushButton, QGridLayout, QLineEdit
 import regex as rgx
 
 from src.View.ImageLabel import ImageLabel
-from src.DBAccess.Controller import Controller
 from src.Model.ModelHandler import modelHandler
+
 
 class AddRecord(QDialog):
     def __init__(self, connectionObject, columns, tableName):
@@ -52,7 +52,7 @@ class AddRecord(QDialog):
         for row in range(self.addLayout.rowCount() - 1):
             values.update({self.columnNames[row]: self.addLayout.itemAtPosition(row, 1).widget().text()})
 
-        self.connectionObject.insertData(modelHandler(self.tableName), values)
+        self.connectionObject.insertRecord(modelHandler(self.tableName), values)
 
         self.status = True
         self.close()

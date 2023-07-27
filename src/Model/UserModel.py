@@ -1,6 +1,6 @@
 from src.Model.BaseModel import Base
 from sqlalchemy.orm import Mapped, mapped_column
-
+import regex as rgx
 
 class User(Base):
     __tablename__ = 'users'
@@ -15,3 +15,6 @@ class User(Base):
 
     def toList(self) -> list:
         return [self.login, self.email, self.passhash, self.id]
+
+    def getPrimaryKey(self):
+        return self.id

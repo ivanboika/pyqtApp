@@ -2,11 +2,13 @@ from src.View.ImageLabel import ImageLabel
 from PyQt5.QtWidgets import QDialog, QGridLayout, QPushButton, QLabel, QLineEdit
 from PyQt5.QtCore import Qt
 
+from src.Model.ModelHandler import modelHandler
+from src.Model.BaseModel import Base
 import regex as rgx
 
 
 class EditingWindow(QDialog):
-    def __init__(self, connectionObject, columnNames, items: list, photos: list):
+    def __init__(self, connectionObject, columnNames, items: list, photos: list, table):
         super(EditingWindow, self).__init__()
 
         self.setAcceptDrops(True)
@@ -17,6 +19,10 @@ class EditingWindow(QDialog):
         self.mainLayout.setAlignment(Qt.AlignTop)
         self.image = ImageLabel()
         self.status = False
+        self.columnNames = columnNames
+        self.controller = connectionObject
+        self.table = table
+
         okButton = QPushButton('Добавить')
         cancelButton = QPushButton('Отмена')
 
@@ -45,7 +51,13 @@ class EditingWindow(QDialog):
         cancelButton.clicked.connect(self.close)
 
     def addButtonOkButtonClicked(self):
-        query = ''
+        values = {}
+        for row in range(self.mainLayout.rowCount() - 1):
+            values.update({self.columnNames[row]: self.mainLayout.itemAtPosition(row, 1).widget().text()})
+        self.controller.updateRecord(modelHandler(self.table), values)
+
+        self.status = True
+        self.close()
 
     def run(self):
         self.exec_()

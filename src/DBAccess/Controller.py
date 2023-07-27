@@ -1,10 +1,10 @@
 # includes all responses from UI
-from sqlalchemy import create_engine, select, inspect, insert
+from sqlalchemy import create_engine, select, inspect, insert, update
 from sqlalchemy import MetaData
-from src.DBAccess.config import connStrForSQLAlchemy
 from sqlalchemy.orm import Session
 from src.Model.BaseModel import Base
-from src.Model.ChairModel import Chair
+from src.DBAccess.config import connStrForSQLAlchemy
+import regex as rgx
 
 
 class Controller:
@@ -25,7 +25,7 @@ class Controller:
 
         return metadata.tables.keys()
 
-    def insertData(self, table: Base, values):
+    def insertRecord(self, table: Base, values):
         with Session(self.engine) as session:
             session.execute(insert(table), values)
             session.commit()
@@ -37,7 +37,10 @@ class Controller:
             columns.append(item.name)
         return columns
 
+    def updateRecord(self, table: Base, values):
+        primaryKey = rgx.split('(.+)[.](.+)$', table.getPrimaryKey(table).__str__())[2]
 
-if __name__ == '__main__':
-    con = Controller()
-    print(con.getDataFromTable(Chair))
+        primaryItem = values.pop(primaryKey)
+        with Session(self.engine) as session:
+            session.execute(update(table).where(table.getPrimaryKey(table) == primaryItem), values)
+            session.commit()

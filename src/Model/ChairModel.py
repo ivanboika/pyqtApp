@@ -18,3 +18,6 @@ class Chair(Base):
     def toList(self) -> list:
         return [self.article, self.name, self.amount, self.producer, self.photo]
 
+    def getPrimaryKey(self):
+        return self.article
+
