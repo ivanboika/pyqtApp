@@ -1,9 +1,8 @@
-from src.View.ImageLabel import ImageLabel
+from crmGUI.View.Widgets.ImageLabel import ImageLabel
 from PyQt5.QtWidgets import QDialog, QGridLayout, QPushButton, QLabel, QLineEdit
 from PyQt5.QtCore import Qt
 
-from src.Model.ModelHandler import modelHandler
-from src.Model.BaseModel import Base
+from crmGUI.Model.ModelHandler import modelHandler
 import regex as rgx
 
 

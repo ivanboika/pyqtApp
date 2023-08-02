@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import QDialog, QLabel, QPushButton, QGridLayout, QLineEdit
 
 import regex as rgx
 
-from src.View.ImageLabel import ImageLabel
-from src.Model.ModelHandler import modelHandler
+from crmGUI.View.Widgets.ImageLabel import ImageLabel
+from crmGUI.Model.ModelHandler import modelHandler
 
 
 class AddRecord(QDialog):

@@ -4,11 +4,11 @@ from PyQt5.QtWidgets import \
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, QSortFilterProxyModel
 
-from src.DBAccess.Controller import Controller
-from src.Model.ModelHandler import modelHandler
-from src.Model.TableModel import TableModel
-from src.View.AddRecordWidget import AddRecord
-from src.View.EditingWindow import EditingWindow
+from crmGUI.DBAccess.Controller import Controller
+from crmGUI.Model.ModelHandler import modelHandler
+from crmGUI.Model.TableModel import TableModel
+from crmGUI.View.Screens.AddRecordWindow import AddRecord
+from crmGUI.View.Screens.EditingWindow import EditingWindow
 
 from win32api import GetSystemMetrics
 import regex as rgx

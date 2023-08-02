@@ -1,4 +1,4 @@
-from src.Model import ChairModel, UserModel
+from crmGUI.Model import ChairModel, UserModel
 
 
 def modelHandler(tableName: str) -> type:

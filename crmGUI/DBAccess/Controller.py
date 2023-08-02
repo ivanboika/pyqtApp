@@ -2,8 +2,8 @@
 from sqlalchemy import create_engine, select, inspect, insert, update
 from sqlalchemy import MetaData
 from sqlalchemy.orm import Session
-from src.Model.BaseModel import Base
-from src.DBAccess.config import connStrForSQLAlchemy
+from crmGUI.Model.BaseModel import Base
+from crmGUI.DBAccess.config import connStrForSQLAlchemy
 import regex as rgx
 
 

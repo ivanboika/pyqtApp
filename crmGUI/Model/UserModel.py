@@ -1,6 +1,6 @@
-from src.Model.BaseModel import Base
+from crmGUI.Model.BaseModel import Base
 from sqlalchemy.orm import Mapped, mapped_column
-import regex as rgx
+
 
 class User(Base):
     __tablename__ = 'users'

@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
+import hashlib
 
 
 class ImageLabel(QLabel):
@@ -15,10 +16,12 @@ class ImageLabel(QLabel):
             }
         ''')
         self.imagePath = ''
+        self.imageHash = ''
 
     def setPixmap(self, image):
         super().setPixmap(QPixmap(image))
         self.imagePath = image
+        print(image)
 
     def text(self):
         return self.imagePath

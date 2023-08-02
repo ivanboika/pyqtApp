@@ -1,5 +1,5 @@
-from sqlalchemy.orm import Mapped, mapped_column, Session
-from src.Model.BaseModel import Base
+from sqlalchemy.orm import Mapped, mapped_column
+from crmGUI.Model.BaseModel import Base
 
 
 class Chair(Base):
@@ -20,4 +20,3 @@ class Chair(Base):
 
     def getPrimaryKey(self):
         return self.article
-
