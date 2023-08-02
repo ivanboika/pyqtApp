@@ -16,12 +16,10 @@ class ImageLabel(QLabel):
             }
         ''')
         self.imagePath = ''
-        self.imageHash = ''
 
     def setPixmap(self, image):
         super().setPixmap(QPixmap(image))
         self.imagePath = image
-        print(image)
 
     def text(self):
         return self.imagePath
