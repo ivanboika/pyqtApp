@@ -4,19 +4,27 @@ from sqlalchemy import MetaData
 from sqlalchemy.orm import Session
 from crmGUI.Model.BaseModel import Base
 from crmGUI.DBAccess.config import connStrForSQLAlchemy
+from crmGUI.DBAccess.config import dockerURL
 import regex as rgx
 
 
+# it should be like restapi
 class Controller:
     def __init__(self):
-        self.engine = create_engine(connStrForSQLAlchemy)
+        self.engine = create_engine(dockerURL)
 
     def getDataFromTable(self, table: Base):
         data = []
         with Session(self.engine) as session:
             stmt = select(table)
             for item in session.scalars(stmt):
-                data.append(item.toList())
+                try:
+                    data.append(item.toList())
+                except AttributeError:
+                    pass
+                finally:
+                    print('No items')
+
         return data
 
     def getAllTableNames(self) -> list[str]:
@@ -32,9 +40,10 @@ class Controller:
 
     def getColumnNames(self, table: Base) -> list[str]:
         columns = []
-        insp = inspect(table)
-        for item in insp.columns:
-            columns.append(item.name)
+        if type(table) is None:
+            insp = inspect(table)
+            for item in insp.columns:
+                columns.append(item.name)
         return columns
 
     def updateRecord(self, table: Base, values):

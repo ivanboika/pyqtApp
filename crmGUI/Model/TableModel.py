@@ -29,4 +29,7 @@ class TableModel(QtCore.QAbstractTableModel):
         return len(self._data)
 
     def columnCount(self, index):
-        return len(self._data[0])
+        try:
+            return len(self._data[0])
+        except IndexError:
+            return 0
